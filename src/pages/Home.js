@@ -1,19 +1,19 @@
-import React from 'react'
-import Base from '../components/Base'
+import React, { useEffect } from "react";
+import Base from "../components/Base";
+import NewFeed from "../components/NewFeed";
+import { Container } from "reactstrap";
 
 const Home = () => {
+  useEffect(() => {}, []);
+
   return (
     <div>
-
-       <Base/>
-      <h1>This is Home Page</h1>
-      <h1>Welcome to Home Page</h1>
-
-
-      
-       
+      <Base />
+      <Container className="mt-3">
+        <NewFeed></NewFeed>
+      </Container>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

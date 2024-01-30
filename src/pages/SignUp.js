@@ -16,7 +16,7 @@ import Base from "../components/Base";
 import { useState } from "react";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-
+import { signUp } from "../services/user-service";
 
 
 const SignUp = () => {
@@ -28,10 +28,9 @@ const SignUp = () => {
     
   });
 
-  const [formValues, setFormValues] = useState(data);
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
-
+  //const [formValues, setFormValues] = useState(data);
+  // const [formErrors, setFormErrors] = useState({});
+  
 
   //reset data
 
@@ -45,24 +44,17 @@ const SignUp = () => {
   };
 
 
-  const [error, setError] = useState({
-    errors: {},
-    isError: false,
-  });
+  const [errors, setError] = useState({});
 
-  //   useEffect(() => {
-  //     console.log(data);
-  //   }, [data]);
 
+  
 
  
   // handle change
 
   const handleChange = (event,  property) => {
-   // setData({ ...data, [property]: event.target.value });
-   const { name, value } = event.target;
-   setFormValues({ ...formValues, [name]: value });
-//setFormValues({...formValues,[property]:event.target.value})
+    setData({ ...data, [property]: event.target.value });
+   
   };
 
 
@@ -71,65 +63,78 @@ const SignUp = () => {
 
   const submitForm = (event) => {
     event.preventDefault();
-   // console.log(data)
-
-    // data validate
-    setFormErrors(validate(formValues));
-//toast.success("toast ")
-    setIsSubmit(true);
+   
     //call server api for sending the data
-   // console.log(formValues)
+   
+    if(validate()){
 
-const SignUp  =async()=>{
+      signUp(data).then((resp)=>{
 
-  fetch("http://localhost:8080/api/users")
+        console.log(resp)
+        
+        toast.success("user Registred...",resp.id)
+        setData({
+          name: "",
+          email: "",
+          password: "",
+          about: "",
+        });
+    
+        }).catch((error)=>{
+    
+         console.log(error)
+        });
+    
+    }
+    
 
-}
    
 
   };
 
-  useEffect(() => {
-   // console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      //console.log(formValues);
-    }
-  }, [formErrors]);
+ 
+ 
 
-
-
-
-const validate=(values)=>{
-
-  const errors = {};
+const validate=()=>{
+  let isValid = true;
+  const newErrors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
-    if(!values.name){
+    if(!data.name){
 
-      errors.name = "Name is required!";
+      newErrors.name = "Name is required!";
+      isValid=false
     }
 
-    if(!values.email){
-      errors.email= "Email is required!";
-    }else if (!regex.test(values.email)) {
-      errors.email = "This is not a valid email format!";
+    if(!data.email){
+      newErrors.email= "Email is required!";
+      isValid=false
+    }else if (!regex.test(data.email)) {
+      newErrors.email = "This is not a valid email format!";
+      isValid=false
     }
 
-    if (!values.password) {
-      errors.password = "Password is required";
-    } else if (values.password.length < 4) {
-      errors.password = "Password must be more than 4 characters";
-    } else if (values.password.length > 10) {
-      errors.password = "Password cannot exceed more than 10 characters";
+    if (!data.password) {
+      newErrors.password = "Password is required";
+      isValid=false
+    } else if (data.password.length < 4) {
+      newErrors.password = "Password must be more than 4 characters";
+      isValid=false
+    } else if (data.password.length > 10) {
+      newErrors.password = "Password cannot exceed more than 10 characters";
+
+      isValid=false
     }
 
-    if(!values.about){
+    if(!data.about){
 
-      errors.about="About is required!"
+      newErrors.about="About is required!"
+      isValid=false
     }
-
-    return errors;
+   setError(newErrors)
+    return isValid;
 }
+
 
 
   return (
@@ -137,14 +142,7 @@ const validate=(values)=>{
       <Base>
         <Container className="mt-2">
 
-        {Object.keys(formErrors).length === 0 && isSubmit ? (
-        <div className="ui message success">Signed in successfully</div>
-      ) : 
-      (
-        <pre>{JSON.stringify( undefined, 2)}</pre>
-      )}
-
-          {/* {JSON.stringify(data)} */}
+        
           <Row>
             <Col sm={{ size: 6, offset: 3 }}>
               <Card color="dark" outline>
@@ -161,10 +159,10 @@ const validate=(values)=>{
                           placeholder="Enter Your Name"
                           onChange={(e) => handleChange(e, "name")}
                           //value={data.name}
-                          value={formValues.name}
+                          value={data.name}
                           name="name"
                         ></Input>
-                         <p>{formErrors.name}</p>
+                         {errors.name && <span style={{ color: 'red' }}>{errors.name}</span>}
                       </FormGroup>
                      
 
@@ -176,10 +174,10 @@ const validate=(values)=>{
                           placeholder="Enter Your Email"
                           onChange={(e) => handleChange(e, "email")}
                           //value={data.email}
-                          value={formValues.email}
+                          value={data.email}
                           name="email"
                         ></Input>
-                         <p>{formErrors.email}</p>
+                         {errors.email && <span style={{ color: 'red' }}>{errors.email}</span>}
                       </FormGroup>
                      
                       <FormGroup>
@@ -190,10 +188,12 @@ const validate=(values)=>{
                           placeholder="Enter Your Password" 
                           onChange={(e) => handleChange(e, "password")}
                          // value={data.password}
-                          value={formValues.password}
+                          value={data.password}
                           name="password"
+
+                          autoComplete="true"
                         ></Input>
-                          <p>{formErrors.password}</p>
+                         {errors.password && <span style={{ color: 'red' }}>{errors.password}</span>}
                       </FormGroup>
                     
                       <FormGroup>
@@ -205,10 +205,10 @@ const validate=(values)=>{
                           placeholder="Enter About "
                           onChange={(e) => handleChange(e, "about")}
                          // value={data.about}
-                         value={formValues.about}
+                         value={data.about}
                          name="about"
                         ></Input>
-                        <p>{formErrors.about}</p>
+                       {errors.about && <span style={{ color: 'red' }}>{errors.about}</span>}
                       </FormGroup>
                     
                       <Container className="text-center">
