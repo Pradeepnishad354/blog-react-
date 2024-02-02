@@ -76,7 +76,7 @@ const changePage=(pageNumber=0,pageSize=5)=>{
             offset: 1,
           }}
         >
-          <h1>Blog Count {postContent.totalElements}</h1>
+          {/* <h1>Blog Count {postContent.totalElements}</h1> */}
 
           {postContent.content.map((post) => (
             <Post post={post} key={post.postId}></Post>

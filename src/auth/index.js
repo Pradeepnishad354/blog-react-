@@ -35,9 +35,9 @@ export const getToken = () => {
 
 
 // get current user
-export const getCurrentUserDetail = () => {
+export const getCurrentUserDetail =  () => {
   if (isLoggedIn()) {
-    return JSON.parse(localStorage.getItem("data")).user;
+    return  JSON.parse(localStorage.getItem("data")).user;
   } else {
     return undefined;
   }

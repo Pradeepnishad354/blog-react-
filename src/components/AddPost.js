@@ -21,7 +21,7 @@ import {toast} from  'react-toastify';
 const AddPost = (props) => {
 
 
-    console.log("props",props)
+   // console.log("props",props)
 
   const [category, setCategories] = useState([]);
   const editor = useRef(null)
@@ -114,7 +114,7 @@ const contentFieldChanaged = (data) => {
     setUser(getCurrentUserDetail())
     loadAllCategories()
       .then((data) => {
-        console.log(data);
+       // console.log(data);
         setCategories(data);
       })
       .catch((error) => {

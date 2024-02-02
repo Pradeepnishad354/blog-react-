@@ -64,7 +64,15 @@ const CustomNavbar = () => {
                 New Feed
               </NavLink>
             </NavItem>
+{
+  login &&
 
+            <NavItem>
+              <NavLink tag={ReactLink} to="/add-category">
+              Category
+              </NavLink>
+            </NavItem>
+}
             <NavItem>
               <NavLink tag={ReactLink} to="/about">
                 About

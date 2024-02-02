@@ -71,11 +71,6 @@ const Login = () => {
           
          
         });
-
-
-
-        
-
         setLoginDetail({
           username: "",
           password: "",
@@ -86,6 +81,9 @@ const Login = () => {
       })
       .catch((error) => {
         console.log(error);
+        toast.error(loginDetail && error.response && error.response.data.message);
+       
+        //toast.error("Invalid username or password !!");
 
         // if (error.response.status == 400||error.response.status ==404) {
 

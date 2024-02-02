@@ -15,6 +15,9 @@ import PrivateRoute from './components/PrivateRoute';
 import ProfileInfo from './pages/user-routes/ProfileInfo';
 import PostPage from './pages/PostPage';
 import Categories from './pages/Categories';
+import AddCategory from './components/AddCategory';
+import UpdateBlog from './pages/UpdateBlog';
+import UserProvider from './context/UserProvider';
 function App() {
   return (
     <div className="App">
@@ -28,12 +31,14 @@ function App() {
 <Route path='/services' element={<Services/>} />
 <Route path="/posts/:postId" element={<PostPage />} />
 <Route path="/categories/:categoryId" element={<Categories />} />
-{/* <Route path='/blog' element={<CreateBlog/>}></Route> */}
+<Route path='/add-category' element={<AddCategory/>}></Route>
+<Route path='/user' element={<UserProvider/>}></Route>
 
 
 <Route path='/user' element={<PrivateRoute/>}>
 <Route path='dashboard' element={<UserDashboard/>}/>
 <Route path='profile-info' element={<ProfileInfo/>}/>
+<Route path='update-blog/:postId'  element={<UpdateBlog/>}/>
 
 
 

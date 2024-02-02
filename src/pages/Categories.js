@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import {  useParams } from 'react-router-dom'
 import { deletePostService, loadPostByCategoryWise } from '../services/post-service'
 import Base from '../components/Base'
 import { toast } from 'react-toastify';
 import CategorySideMenu from '../components/CategorySideMenu';
 import { Row,Col,Container } from 'reactstrap';
 import Post from '../components/Post';
+
+
 const Categories = () => {
 
     const{categoryId}=useParams()
@@ -20,7 +22,8 @@ loadPostByCategoryWise(categoryId).then(data=>{
  setPost([...data])
 }).catch((error)=>{
     console.log(error)
-    toast.error("error in loading posts")
+   
+    //toast.error("error in loading posts")
 })
 
 },[categoryId])

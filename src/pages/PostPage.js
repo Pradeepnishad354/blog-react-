@@ -108,7 +108,7 @@ createComment(comment,post.postId).then(data=>{
                       }}
                     ></div>
 
-                    <h1 className="mt-2">{post.title}</h1>
+                    <h3 className="mt-2">{post.title}</h3>
 
                     <CardText
                       className="mt-5"

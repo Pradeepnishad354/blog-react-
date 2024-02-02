@@ -19,7 +19,7 @@ export const createPost = async (postData) => {
 
   export const loadAllPost= async (pageNumber,pageSize)=>{
 
-   return await myAxios.get(`/api/posts?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=addedDate&sortDir=asc`)
+   return await myAxios.get(`/api/posts?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=addedDate&sortDir=desc`)
    .then((response)=>response.data)
 
   } 
@@ -67,14 +67,29 @@ export const loadPostByCategoryWise=async(categoryId)=>{
 }
 
 
+
 //delete post
 
 export const deletePostService =async(postId)=>{
 
-  return await  privateAxios.delete(`/api/posts${postId}`).then(response=>response.data)
+  return await  privateAxios.delete(`/api/posts/${postId}`).then(response=>response.data)
 }
 
 
+//load post user wise 
+export const loadPostUserWise=async(userId)=>{
+
+return  await myAxios.get(`/api/user/${userId}/posts`).then(response=>response.data)
+
+}
+
+
+
+// update post blog 
+export const updatePostBlog=async(post,postId)=>{
+
+  return await privateAxios.put(`api/posts/${postId}`,post).then((response)=>response.data)
+}
 
 
  
